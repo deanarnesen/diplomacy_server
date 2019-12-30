@@ -20,6 +20,19 @@
 #define BACKLOG 20
 #define NTHREADS 20
 #define SBUFSIZE 20
+
+sbuf_t sbuf;
+
+void* thread(void * arg) {
+    Pthread_detach(pthread_self());
+    while(1){
+        int fd = sbuf_remove(&sbuf);
+        //TODO handle client
+        break;
+    }
+
+}
+
 int main(int argc, char** argv)
 {
     signal(SIGPIPE, SIG_IGN);
@@ -65,8 +78,6 @@ int main(int argc, char** argv)
 
     //pool up, bois
     sbuf_init(&sbuf, SBUFSIZE);
-    slog_init(&slog, SBUFSIZE);
-    scache_init(&scache, MAX_CACHE_SIZE);
     for(int i = 0; i < NTHREADS; i++){
         Pthread_create(&tid, NULL, thread, NULL);
     }
